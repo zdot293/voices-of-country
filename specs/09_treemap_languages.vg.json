@@ -1,0 +1,277 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Treemap: the 76,978 people who spoke an Indigenous language at home in 2021, by type of language and the largest named languages (ABS Census 2021). Group headers show each type's total.",
+  "height": 380,
+  "padding": 2,
+  "autosize": "none",
+  "signals": [
+    {
+      "name": "width",
+      "init": "containerSize()[0] || 1000",
+      "on": [
+        {
+          "events": "window:resize",
+          "update": "containerSize()[0] || 1000"
+        }
+      ]
+    },
+    {
+      "name": "hoverName",
+      "value": null,
+      "on": [
+        {
+          "events": "rect:pointerover",
+          "update": "datum.name"
+        },
+        {
+          "events": "rect:pointerout",
+          "update": "null"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "tree",
+      "url": "data/abs_treemap_2021.csv",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "speakers": "number"
+        }
+      },
+      "transform": [
+        {
+          "type": "stratify",
+          "key": "id",
+          "parentKey": "parent"
+        },
+        {
+          "type": "treemap",
+          "field": "speakers",
+          "sort": {
+            "field": "value",
+            "order": "descending"
+          },
+          "round": true,
+          "method": "squarify",
+          "ratio": 1.4,
+          "paddingInner": 2,
+          "paddingOuter": 0,
+          "paddingTop": 22,
+          "size": [
+            {
+              "signal": "width"
+            },
+            {
+              "signal": "height"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "groups",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.parent == 'root' && datum.children"
+        }
+      ]
+    },
+    {
+      "name": "leaves",
+      "source": "tree",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!datum.children"
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        "Traditional languages",
+        "New contact languages",
+        "Aboriginal English",
+        "Language not specified"
+      ],
+      "range": [
+        "#1f6f63",
+        "#c2622d",
+        "#8f7a5f",
+        "#b8ae9f"
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {
+        "data": "groups"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fill": {
+            "value": "#efe7da"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "groups"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "field": "x0",
+            "offset": 4
+          },
+          "y": {
+            "field": "y0",
+            "offset": 15
+          },
+          "fontSize": {
+            "value": 12.5
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#2b2420"
+          },
+          "limit": {
+            "signal": "datum.x1 - datum.x0 - 8"
+          },
+          "text": {
+            "signal": "datum.id == 'trad' ? 'Traditional languages · 52,139 speakers (68%)' : 'New contact languages · 15,026 (1 in 5)'"
+          }
+        }
+      }
+    },
+    {
+      "type": "rect",
+      "from": {
+        "data": "leaves"
+      },
+      "encode": {
+        "enter": {
+          "fill": {
+            "scale": "color",
+            "field": "group"
+          },
+          "stroke": {
+            "value": "#faf6ef"
+          },
+          "tooltip": {
+            "signal": "{'Language': datum.name, 'Speakers (2021)': format(datum.speakers, ','), 'Type': datum.group}"
+          }
+        },
+        "update": {
+          "x": {
+            "field": "x0"
+          },
+          "y": {
+            "field": "y0"
+          },
+          "x2": {
+            "field": "x1"
+          },
+          "y2": {
+            "field": "y1"
+          },
+          "fillOpacity": {
+            "signal": "hoverName === datum.name ? 1 : 0.86"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "leaves"
+      },
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {
+            "field": "x0",
+            "offset": 6
+          },
+          "y": {
+            "field": "y0",
+            "offset": 17
+          },
+          "fill": {
+            "value": "#ffffff"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fontWeight": {
+            "value": 600
+          },
+          "limit": {
+            "signal": "datum.x1 - datum.x0 - 10"
+          },
+          "text": {
+            "signal": "(datum.y1 - datum.y0) > 22 ? datum.name : ''"
+          }
+        }
+      }
+    },
+    {
+      "type": "text",
+      "from": {
+        "data": "leaves"
+      },
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {
+            "field": "x0",
+            "offset": 6
+          },
+          "y": {
+            "field": "y0",
+            "offset": 32
+          },
+          "fill": {
+            "value": "#ffffff"
+          },
+          "fillOpacity": {
+            "value": 0.9
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "limit": {
+            "signal": "datum.x1 - datum.x0 - 10"
+          },
+          "text": {
+            "signal": "(datum.y1 - datum.y0) > 38 ? format(datum.speakers, ',') : ''"
+          }
+        }
+      }
+    }
+  ]
+}

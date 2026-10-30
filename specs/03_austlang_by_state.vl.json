@@ -1,0 +1,70 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Bar chart: language varieties recorded in AIATSIS AustLang, by state or territory.",
+  "data": {
+    "url": "data/austlang_varieties_by_state.csv"
+  },
+  "width": "container",
+  "height": 250,
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "color": "#c2622d",
+        "cornerRadiusEnd": 2,
+        "height": 18
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 4,
+        "fontSize": 12,
+        "color": "#2b2420"
+      },
+      "encoding": {
+        "text": {
+          "field": "varieties",
+          "type": "quantitative",
+          "format": ","
+        }
+      }
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": "-x",
+      "title": null,
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12
+      }
+    },
+    "x": {
+      "field": "varieties",
+      "type": "quantitative",
+      "title": "Language varieties recorded",
+      "axis": {
+        "grid": false,
+        "labels": false,
+        "ticks": false,
+        "domain": false,
+        "title": null
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "title": "Where"
+      },
+      {
+        "field": "varieties",
+        "title": "Varieties recorded"
+      }
+    ]
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Slope chart: languages still spoken and strong languages in the three National Indigenous Languages Surveys (2005, 2014, 2019), on a time axis with annotations of the change.",
+  "width": "container",
+  "height": 240,
+  "layer": [
+    {
+      "data": {
+        "url": "data/nils_surveys.csv"
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "domain": [
+              2003.5,
+              2020.5
+            ]
+          },
+          "axis": {
+            "values": [
+              2005,
+              2014,
+              2019
+            ],
+            "grid": false,
+            "labelFontSize": 12,
+            "labelExpr": "datum.value + (datum.value == 2005 ? ' (NILS1)' : datum.value == 2014 ? ' (NILS2)' : ' (NILS3)')"
+          }
+        },
+        "y": {
+          "field": "languages",
+          "type": "quantitative",
+          "title": "Languages",
+          "scale": {
+            "domain": [
+              0,
+              165
+            ]
+          }
+        },
+        "color": {
+          "field": "measure",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "range": [
+              "#c2622d",
+              "#1f6f63"
+            ]
+          },
+          "legend": {
+            "orient": "top"
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "size": 80
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "survey"
+              },
+              {
+                "field": "measure"
+              },
+              {
+                "field": "languages",
+                "title": "Languages"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -13,
+            "fontSize": 12,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "text": {
+              "field": "languages",
+              "type": "quantitative"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "year": 2009.5,
+            "languages": 146,
+            "t": "25 fewer languages spoken in 9 years",
+            "c": "#c2622d"
+          },
+          {
+            "year": 2016.5,
+            "languages": 135,
+            "t": "Decline paused: +3",
+            "c": "#c2622d"
+          },
+          {
+            "year": 2009.5,
+            "languages": 30,
+            "t": "Strong languages: 18 → 13 → 14",
+            "c": "#1f6f63"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontStyle": "italic",
+        "fontWeight": 600
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "languages",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        },
+        "color": {
+          "field": "c",
+          "type": "nominal",
+          "scale": null
+        }
+      }
+    }
+  ]
+}

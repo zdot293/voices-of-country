@@ -1,0 +1,338 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Tile-grid map: one equal-sized square per state or territory, placed roughly where it sits on the map. Colour shows the change, in percentage points, in the share of First Nations people speaking an Indigenous language at home between the 2016 and 2021 Censuses.",
+  "data": {
+    "url": "data/abs_share_by_state.csv"
+  },
+  "width": 560,
+  "height": 560,
+  "transform": [
+    {
+      "pivot": "year",
+      "value": "pct",
+      "groupby": [
+        "state"
+      ]
+    },
+    {
+      "lookup": "state",
+      "from": {
+        "data": {
+          "values": [
+            {
+              "state": "Northern Territory",
+              "abbr": "NT",
+              "col": 1,
+              "row": 0
+            },
+            {
+              "state": "Queensland",
+              "abbr": "QLD",
+              "col": 2,
+              "row": 0
+            },
+            {
+              "state": "Western Australia",
+              "abbr": "WA",
+              "col": 0,
+              "row": 1
+            },
+            {
+              "state": "South Australia",
+              "abbr": "SA",
+              "col": 1,
+              "row": 1
+            },
+            {
+              "state": "New South Wales",
+              "abbr": "NSW",
+              "col": 2,
+              "row": 1
+            },
+            {
+              "state": "Australian Capital Territory",
+              "abbr": "ACT",
+              "col": 3,
+              "row": 1
+            },
+            {
+              "state": "Victoria",
+              "abbr": "VIC",
+              "col": 2,
+              "row": 2
+            },
+            {
+              "state": "Tasmania",
+              "abbr": "TAS",
+              "col": 2,
+              "row": 3
+            }
+          ]
+        },
+        "key": "state",
+        "fields": [
+          "abbr",
+          "col",
+          "row"
+        ]
+      }
+    },
+    {
+      "calculate": "datum['2021'] - datum['2016']",
+      "as": "change"
+    },
+    {
+      "calculate": "datum.col + 0.04",
+      "as": "x0"
+    },
+    {
+      "calculate": "datum.col + 0.96",
+      "as": "x1"
+    },
+    {
+      "calculate": "datum.row + 0.04",
+      "as": "y0"
+    },
+    {
+      "calculate": "datum.row + 0.96",
+      "as": "y1"
+    },
+    {
+      "calculate": "datum.col + 0.5",
+      "as": "cx"
+    },
+    {
+      "calculate": "(datum.change > 0 ? '+' : '') + format(datum.change, '.1f') + ' pts'",
+      "as": "changeLab"
+    },
+    {
+      "calculate": "format(datum['2016'], '.1f') + '% → ' + format(datum['2021'], '.1f') + '%'",
+      "as": "rangeLab"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 4
+      },
+      "encoding": {
+        "x": {
+          "field": "x0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "axis": null
+        },
+        "x2": {
+          "field": "x1"
+        },
+        "y": {
+          "field": "y0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ],
+            "reverse": true
+          },
+          "axis": null
+        },
+        "y2": {
+          "field": "y1"
+        },
+        "color": {
+          "field": "change",
+          "type": "quantitative",
+          "title": "Change in share, 2016 → 2021 (percentage points)",
+          "scale": {
+            "domain": [
+              -1.2,
+              0,
+              1.2
+            ],
+            "range": [
+              "#9e3b2b",
+              "#f3ead9",
+              "#1f6f63"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 220,
+            "titleFontSize": 12,
+            "titleLimit": 400
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "2016",
+            "title": "2016 (%)"
+          },
+          {
+            "field": "2021",
+            "title": "2021 (%)"
+          },
+          {
+            "field": "change",
+            "title": "Change (pts)",
+            "format": "+.1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.row + 0.27",
+          "as": "cy"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 17,
+        "fontWeight": 700
+      },
+      "encoding": {
+        "x": {
+          "field": "cx",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "cy",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ],
+            "reverse": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "abbr"
+        },
+        "color": {
+          "condition": {
+            "test": "abs(datum.change) >= 0.8",
+            "value": "#ffffff"
+          },
+          "value": "#2b2420"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.row + 0.53",
+          "as": "cy"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 21,
+        "fontWeight": 700
+      },
+      "encoding": {
+        "x": {
+          "field": "cx",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "cy",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ],
+            "reverse": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "changeLab"
+        },
+        "color": {
+          "condition": {
+            "test": "abs(datum.change) >= 0.8",
+            "value": "#ffffff"
+          },
+          "value": "#2b2420"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "calculate": "datum.row + 0.76",
+          "as": "cy"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 13
+      },
+      "encoding": {
+        "x": {
+          "field": "cx",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "cy",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4
+            ],
+            "reverse": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "rangeLab"
+        },
+        "color": {
+          "condition": {
+            "test": "abs(datum.change) >= 0.8",
+            "value": "#ffffff"
+          },
+          "value": "#2b2420"
+        }
+      }
+    }
+  ]
+}

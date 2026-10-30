@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "100% stacked bars: age profile of people who speak an Indigenous language at home, Census 2011, 2016 and 2021.",
+  "width": "container",
+  "height": 170,
+  "layer": [
+    {
+      "data": {
+        "url": "data/abs_speakers_by_age.csv"
+      },
+      "transform": [
+        {
+          "stack": "pct",
+          "groupby": [
+            "year"
+          ],
+          "sort": [
+            {
+              "field": "order"
+            }
+          ],
+          "offset": "normalize",
+          "as": [
+            "s0",
+            "s1"
+          ]
+        },
+        {
+          "calculate": "(datum.s0 + datum.s1) / 2",
+          "as": "mid"
+        },
+        {
+          "calculate": "datum.pct >= 8 ? format(datum.pct, '.1f') + '%' : ''",
+          "as": "lab"
+        }
+      ],
+      "encoding": {
+        "y": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "axis": {
+            "ticks": false,
+            "domain": false,
+            "labelFontSize": 13
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "height": 30,
+            "stroke": "#faf6ef",
+            "strokeWidth": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "s0",
+              "type": "quantitative",
+              "title": null,
+              "scale": {
+                "domain": [
+                  0,
+                  1
+                ]
+              },
+              "axis": {
+                "format": "%",
+                "grid": false
+              }
+            },
+            "x2": {
+              "field": "s1"
+            },
+            "color": {
+              "field": "age",
+              "type": "ordinal",
+              "title": "Age group",
+              "scale": {
+                "domain": [
+                  "0–14",
+                  "15–24",
+                  "25–44",
+                  "45–64",
+                  "65+"
+                ],
+                "range": [
+                  "#1f6f63",
+                  "#6aa585",
+                  "#d8c9a8",
+                  "#d79a5c",
+                  "#a5502a"
+                ]
+              },
+              "legend": {
+                "orient": "bottom",
+                "direction": "horizontal"
+              }
+            },
+            "tooltip": [
+              {
+                "field": "year",
+                "title": "Census"
+              },
+              {
+                "field": "age",
+                "title": "Age"
+              },
+              {
+                "field": "pct",
+                "title": "% of speakers"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 11,
+            "fontWeight": 600
+          },
+          "encoding": {
+            "text": {
+              "field": "lab"
+            },
+            "x": {
+              "field": "mid",
+              "type": "quantitative"
+            },
+            "color": {
+              "condition": {
+                "test": "datum.order <= 1",
+                "value": "#ffffff"
+              },
+              "value": "#2b2420"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 0.0,
+            "year": 2011,
+            "t": "Children aged 0–14 make up about 1 in 3 speakers ↓"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "yOffset": -27,
+        "fontSize": 12,
+        "fontWeight": 700,
+        "color": "#1f6f63"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "year",
+          "type": "ordinal"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    }
+  ]
+}

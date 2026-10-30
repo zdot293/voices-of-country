@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voices of Country: Australia's First Languages</title>
+  <meta name="description" content="A data story about Aboriginal and Torres Strait Islander languages: how many were spoken, where they are spoken today, and how communities are bringing them back.">
+  <meta name="author" content="Zubair Ahmed">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="kicker">Australia's First Languages · 1788 to today</p>
+    <h1>Voices of Country</h1>
+    <p class="dek">Before 1788, this continent spoke more than 250 languages. Today only a handful are still learned by every child. This is the story of what was lost, where languages survive, and how communities are waking them up again.</p>
+    <p class="byline">By <strong>Zubair Ahmed</strong> · FIT3179 Data Visualisation 2</p>
+  </div>
+</header>
+
+<p class="acknowledgement">I acknowledge the Traditional Custodians of the lands on which this work was made, and pay my respects to Elders past and present. Aboriginal and Torres Strait Islander languages belong to their communities; this page uses public statistics about them, not the languages themselves.</p>
+
+<div class="stats" aria-label="Key numbers">
+  <div class="stat c1"><span class="n">250+</span><span class="l">languages spoken when the British arrived in 1788</span></div>
+  <div class="stat c2"><span class="n">123</span><span class="l">still in use or being revived (2018–19 national survey)</span></div>
+  <div class="stat c3"><span class="n">14</span><span class="l">"strong": spoken by every generation, including children</span></div>
+  <div class="stat c4"><span class="n">76,978</span><span class="l">people spoke an Indigenous language at home in 2021</span></div>
+</div>
+
+<!-- ============ 1 ============ -->
+<section id="continent">
+  <p class="chapter">Chapter 1 · A continent of languages</p>
+  <h2>More than 250 languages, and most of them have gone quiet</h2>
+
+  <div class="row">
+    <div class="text">
+      <p class="lede" style="font-size:18px">Aboriginal Australia was never one culture with one language. It was more like Europe: hundreds of distinct languages, each tied to its own Country.</p>
+      <p>Each square on the right stands for one of the roughly 250 languages spoken in 1788. The most recent national survey (NILS3, 2018–19) found that about <strong>123</strong> are still used or being revived. Only <strong>14</strong> are strong, meaning children still learn them as a first language.</p>
+      <p class="caption">"About 127" is an estimate: it is the gap between the ~250 languages at colonisation (National Indigenous Languages Report) and the 123 counted by NILS3. The two figures come from different counts, so treat it as approximate.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">What happened to the languages of 1788?</h3>
+      <p class="chart-sub">One square = one language</p>
+      <div id="vis-waffle" class="chart center"></div>
+    </div>
+  </div>
+
+  <dl class="glossary">
+    <div><dt class="g1">Strong language</dt><dd>Spoken by all generations. Children grow up speaking it at home.</dd></div>
+    <div><dt class="g2">Endangered language</dt><dd>Still spoken, but mostly by older people, so it is not being passed on to children.</dd></div>
+    <div><dt class="g3">Sleeping language</dt><dd>No longer spoken every day. Many communities prefer "sleeping" to "extinct", because a language can be woken up from records and memory.</dd></div>
+  </dl>
+
+  <div class="figure">
+    <h3 class="chart-title">Where each language belongs, and how it is faring <span class="hint">Click the legend to show one status</span></h3>
+    <p class="chart-sub">356 Australian languages placed at the approximate centre of their Country, coloured by Glottolog's endangerment level. Hover a dot for its name.</p>
+    <div id="vis-dotmap" class="chart map"></div>
+    <p class="caption">Glottolog uses an international scale that is stricter than the national survey's, so it counts only Kriol and Gurindji Kriol as safe. Four more (Alyawarr, Kukatja, Mawng and Pitjantjatjara) are "threatened": still learned by children, but under pressure. <strong>227 of the 356 (64%) are sleeping.</strong></p>
+  </div>
+
+  <div class="row even">
+    <div class="text">
+      <h3>Many names, many dialects</h3>
+      <p>Counting languages is hard. One language can have several dialects, and different groups may record it under different names. The AIATSIS AustLang database, which communities help maintain, lists <strong>1,183</strong> distinct language varieties.</p>
+      <p>Queensland has the most recorded varieties (341), followed by the Northern Territory (260) and Western Australia (199). These are also the states where the most languages were still spoken into the 20th century.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">Language varieties recorded in AustLang</h3>
+      <p class="chart-sub">By state or territory (a variety can be recorded in more than one)</p>
+      <div id="vis-austlang" class="chart"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============ 2 ============ -->
+<section id="geography">
+  <p class="chapter">Chapter 2 · The geography of loss</p>
+  <h2>Loss followed the frontier, from the south-east to the north</h2>
+
+  <div class="row even">
+    <div class="text">
+      <p>Colonisation spread outward from Sydney, and so did language loss. Where settlers arrived earliest and in the greatest numbers, people were pushed off Country and children were removed or punished for speaking their languages.</p>
+      <p><strong>Green squares</strong> mark areas where languages still have speakers: Arnhem Land, the Kimberley and the Central and Western Deserts. These remote regions were colonised later, and communities kept speaking their languages.</p>
+    </div>
+    <div class="text">
+      <div class="callout"><strong>Red squares</strong> mark areas where every recorded language is now sleeping. They cover almost all of New South Wales, Victoria, Tasmania and south-east Queensland.</div>
+    </div>
+  </div>
+
+  <div class="figure">
+    <h3 class="chart-title">Share of languages in each area that are now sleeping</h3>
+    <p class="chart-sub">Languages grouped into squares 200 km wide, each the same size on the ground. Hover a square for its count.</p>
+    <div id="vis-binmap" class="chart map"></div>
+  </div>
+
+  <div class="figure">
+    <h3 class="chart-title">Every Victorian and Tasmanian language on record is now sleeping</h3>
+    <p class="chart-sub">Status of each state's languages (Glottolog). The number in brackets is how many languages are located in that state.</p>
+    <div id="vis-status-state" class="chart"></div>
+    <p class="caption">Read each bar from left (strongest) to right (sleeping). In the Northern Territory only 35% of languages are sleeping, compared with 84% in New South Wales.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============ 3 ============ -->
+<section id="today">
+  <p class="chapter">Chapter 3 · Who speaks today</p>
+  <h2>More speakers than ever, but a smaller share of First Nations people</h2>
+  <p class="lede">The Census asks every household which language it uses at home. Two trends move in opposite directions.</p>
+
+  <div class="figure">
+    <div id="vis-share" class="chart"></div>
+    <p class="caption">The number of speakers rose by more than half between 2001 and 2021. The number of people identifying as Aboriginal or Torres Strait Islander grew even faster, so the <em>share</em> who speak an Indigenous language at home fell, from 16.4% in 1991 to 9.5% in 2021.</p>
+  </div>
+
+  <div class="figure">
+    <h3 class="chart-title">The Northern Territory is the heartland of spoken languages <span class="hint">Hover a state to compare years</span></h3>
+    <p class="chart-sub">% of each state's Aboriginal and Torres Strait Islander people who speak an Indigenous language at home</p>
+    <div id="vis-choropleth" class="chart"></div>
+    <p class="caption">In the NT, nearly 6 in 10 First Nations people (58.5%) speak an Indigenous language at home. In New South Wales it is under 2 in 100. Between 2016 and 2021 the share more than doubled in NSW (0.8% → 1.9%) and Tasmania (0.3% → 0.6%), a sign of revival in the south-east.</p>
+  </div>
+
+  <div class="row">
+    <div class="text">
+      <h3>Strongholds in remote communities</h3>
+      <p>The ten communities with the most speakers are all in the north. Seven are in the NT. <strong>Maningrida</strong> in Arnhem Land leads, with 2,198 people speaking an Indigenous language at home. Maningrida is also one of the most multilingual places in the world: 15 languages are spoken or signed there every day.</p>
+      <p>In these places, an Indigenous language is the everyday language of shops, sport and family, and English is learned second.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">Communities with the most speakers, 2021</h3>
+      <p class="chart-sub">Circle area = people speaking an Indigenous language at home</p>
+      <div id="vis-communities" class="chart map" style="min-height:430px"></div>
+    </div>
+  </div>
+
+  <div class="figure">
+    <h3 class="chart-title">What do the 76,978 speakers speak?</h3>
+    <p class="chart-sub">Rectangle area = number of speakers (Census 2021). Hover for exact numbers.</p>
+    <div id="vis-treemap" class="chart"></div>
+    <p class="caption">The two most-spoken single languages are <strong>new contact languages</strong>. "Cape York Peninsula languages (grouped)" is a Census category that combines several smaller languages, and "Other contact languages" (27 speakers) is what is left of the 15,026 contact-language speakers after Yumplatok and Kriol, mainly Gurindji Kriol and Light Warlpiri. <strong>Yumplatok</strong> (Torres Strait Creole, 7,596 speakers) and <strong>Kriol</strong> (7,403) are full languages that First Nations people created after colonisation by mixing English with traditional languages. They are now the most widely spoken Indigenous languages in Australia. Traditional languages still have more than 52,000 speakers combined, spread across about 150 languages.</p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============ 4 ============ -->
+<section id="future">
+  <p class="chapter">Chapter 4 · Will the next generation speak?</p>
+  <h2>A language survives only if children learn it</h2>
+
+  <div class="row">
+    <div class="text">
+      <p>Most Indigenous languages have very few speakers. In 2021, 78 languages counted in the Census had <strong>no speakers aged under 15</strong>.</p>
+      <p>Read the grid from top to bottom: bigger languages are at the top. The darkest cells are near the bottom, where most languages sit, with 50 or fewer speakers each.</p>
+      <p>There is some good news. The number of languages with 1,001 to 5,000 speakers almost doubled between 2016 and 2021 (9 → 17), and the number of languages with no speakers at all fell from 60 in 2011 to 50 in 2021.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">How many speakers does each language have?</h3>
+      <p class="chart-sub">Number of languages in each speaker range, by Census year</p>
+      <div id="vis-heatmap" class="chart"></div>
+    </div>
+  </div>
+
+  <div class="row flip">
+    <div>
+      <h3 class="chart-title">Speakers are young</h3>
+      <p class="chart-sub">Age of people who speak an Indigenous language at home</p>
+      <div id="vis-age" class="chart"></div>
+    </div>
+    <div class="text">
+      <p>Where languages are still spoken, they are spoken by the young. In 2021 one in three speakers (32.7%) was a child aged 0–14, and the median speaker was just 27 years old.</p>
+      <p>This is the clearest sign of hope in the data: in strong communities, languages are still being passed from parents to children.</p>
+    </div>
+  </div>
+
+  <div class="figure">
+    <h3 class="chart-title">The national surveys: fewer languages, but the decline has paused</h3>
+    <p class="chart-sub">Results of the three National Indigenous Languages Surveys (NILS)</p>
+    <div id="vis-nils" class="chart"></div>
+    <p class="caption">Between the first and second surveys, 25 fewer languages were reported as spoken and five strong languages weakened. The third survey found slightly more of both, partly because more communities are now reviving their languages.</p>
+  </div>
+
+  <div class="row">
+    <div class="text">
+      <h3>Most languages hang by a thread</h3>
+      <p>NILS3 asked communities about 141 language varieties. Each wedge on the right is one speaker range, and longer wedges mean more varieties.</p>
+      <div class="big-number">67</div>
+      <p>varieties have 50 or fewer speakers (37 with 1–10, and 30 with 11–50). Only 20 have more than 1,000.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">Language varieties by number of speakers (NILS3, 2018–19)</h3>
+      <p class="chart-sub">141 varieties reported by communities</p>
+      <div id="vis-radial" class="chart center"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ============ 5 ============ -->
+<section id="revival">
+  <p class="chapter">Chapter 5 · Waking languages up</p>
+  <h2>From loss to recognition</h2>
+  <p class="lede">For almost two centuries after 1788, governments made no effort to protect Indigenous languages. Support began in the 1970s, but it has not been steady.</p>
+
+  <div class="figure">
+    <h3 class="chart-title">Milestones in language loss and revival <span class="hint">Hover for detail</span></h3>
+    <p class="chart-sub">Not drawn to scale: there is a gap of 185 years between the first two events. Hover a milestone to see its source.</p>
+    <div id="vis-timeline" class="chart"></div>
+  </div>
+
+  <div class="row">
+    <div class="text">
+      <h3>Revival shows up in the south-east</h3>
+      <p>Between the 2016 and 2021 Censuses, the share of First Nations people speaking an Indigenous language at home <strong>rose in six of the eight states and territories</strong>. The biggest rises were in New South Wales and the ACT, in the south-east, where Chapter 2 showed that almost every traditional language had gone to sleep.</p>
+      <p>It fell slightly in the two heartlands, the Northern Territory and Western Australia, even though their number of speakers is still by far the largest.</p>
+      <p class="caption">Each square is one state or territory, all the same size and placed roughly where it sits on the map. "Pts" means percentage points: NSW going from 0.8% to 1.9% is a rise of 1.1 points. Some of the rise may also come from changes in how people identify and how the Census records languages.</p>
+    </div>
+    <div>
+      <h3 class="chart-title">Change in the share speaking an Indigenous language, 2016 → 2021</h3>
+      <p class="chart-sub">Green = rising, red = falling. Hover a square for exact values.</p>
+      <div id="vis-tiles" class="chart center"></div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Today, revival is led by communities. Language centres record Elders, write dictionaries and teach languages in schools. NILS3 found <strong>at least 31</strong> languages being reawakened. Kaurna, the language of the Adelaide Plains, has been taught in schools since 1992 and at the University of Adelaide since 1997. Wiradjuri, from central New South Wales, is now taught at Charles Sturt University.</p>
+    <p>Closing the Gap Target 16 now commits Australian governments to a sustained increase in the number and strength of Indigenous languages by 2031. The 2026 Census and the fourth national languages survey (NILS4, 2025–26) will show whether that is happening.</p>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="inner">
+    <h2>Every language is a way of knowing Country</h2>
+    <p>Most of the languages of 1788 have gone quiet, and loss followed the path of colonisation. But the number of speakers is growing, children in the north are still learning their languages, and in the south-east sleeping languages are being woken up. A language is never truly gone while its community wants it back.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="meta">
+    <div><h3>Author</h3><p>Zubair Ahmed<br>FIT3179 Data Visualisation, Monash University<br>Published 30 October 2026</p></div>
+    <div><h3>Built with</h3><p>Vega-Lite 5 and Vega 5 (all charts and maps). The four projected maps use an Albers equal-area conic projection (standard parallels 18°S and 36°S, as in the official Australian Albers, EPSG:3577). For the bin map, the data was pre-projected so the bins are true 200 km squares. The tile-grid map is deliberately unprojected, so every state gets an equal-sized square.</p></div>
+    <div><h3>Use of AI</h3><p>This page was built with substantial help from generative AI (Claude, Anthropic). It drafted the chart specifications, page code and much of the text. The author reviewed and edited the work, and checked the figures against the sources below.</p></div>
+  </div>
+
+  <h3>Data sources</h3>
+  <ol>
+    <li>Australian Bureau of Statistics (2022). <em>Language Statistics for Aboriginal and Torres Strait Islander Peoples, 2021</em>: speakers by state, age, speaker range, top languages and locations. <a href="https://www.abs.gov.au/statistics/people/aboriginal-and-torres-strait-islander-peoples/language-statistics-aboriginal-and-torres-strait-islander-peoples/2021">abs.gov.au</a></li>
+    <li>Australian Bureau of Statistics. <em>Measuring What Matters: Aboriginal and Torres Strait Islander languages spoken</em>: speaker counts for 2001, 2016 and 2021. <a href="https://www.abs.gov.au/statistics/measuring-what-matters/measuring-what-matters-themes-and-indicators/cohesive/aboriginal-and-torres-strait-islander-languages-spoken">abs.gov.au</a></li>
+    <li>Hammarström, H., Forkel, R., Haspelmath, M. &amp; Bank, S. <em>Glottolog</em> (CLDF dataset, CC BY 4.0): language locations, families and Agglomerated Endangerment Status. <a href="https://github.com/glottolog/glottolog-cldf">github.com/glottolog/glottolog-cldf</a></li>
+    <li>AIATSIS. <em>AustLang</em>: language varieties by state, accessed 30 October 2026. <a href="https://aiatsis.gov.au/austlang">aiatsis.gov.au/austlang</a></li>
+    <li>Department of Infrastructure, Transport, Regional Development and Communications, AIATSIS &amp; ANU (2020). <em>National Indigenous Languages Report</em> (NILS3 results). <a href="https://www.arts.gov.au/sites/default/files/documents/4national-indigenous-languages-report-pdf-chapter3_0.pdf">arts.gov.au</a></li>
+    <li>AIATSIS. <em>Previous National Indigenous Languages Surveys</em> (NILS1 and NILS2 results). <a href="https://aiatsis.gov.au/research/current-projects/third-national-indigenous-languages-survey/NILS3-online/previous-national">aiatsis.gov.au</a></li>
+    <li>Productivity Commission. <em>Closing the Gap Target 16</em>. <a href="https://www.pc.gov.au/closing-the-gap-data/dashboard/se/outcome-area16">pc.gov.au</a></li>
+    <li>Department of Infrastructure, Transport, Regional Development and Communications, AIATSIS &amp; ANU (2020). <em>National Indigenous Languages Report</em>, chapter 1 ("over 250 languages" at colonisation). <a href="https://www.arts.gov.au/sites/default/files/documents/2national-indigenous-languages-report-pdf-chapter1_0.pdf">arts.gov.au</a></li>
+    <li>Friends of Bilingual Learning. <em>NT Bilingual Education Timeline</em> (1973 start) and <em>Bilingual Education in the NT until October 14, 2008</em> (the four-hours-of-English policy). <a href="https://fobl.net.au/index.php/history">fobl.net.au/history</a> · <a href="https://fobl.net.au/index.php/history/67-bilingual-education-in-the-nt-until-october-14-2008">fobl.net.au (2008)</a></li>
+    <li>Multicultural Australia. <em>National Language Policy</em>, timeline commentary (1987). <a href="https://multiculturalaustralia.edu.au/library/media/Timeline-Commentary/id/120.National-Language-Policy">multiculturalaustralia.edu.au</a></li>
+    <li>NSW Aboriginal Languages Trust. <em>NSW Aboriginal Languages Legislation</em> (Aboriginal Languages Act 2017). <a href="https://www.alt.nsw.gov.au/our-story/nsw-aboriginal-languages-legislation">alt.nsw.gov.au</a></li>
+    <li>Office for the Arts. <em>Global launch of the International Decade of Indigenous Languages 2022–2032</em>. <a href="https://www.arts.gov.au/news/global-launch-international-decade-indigenous-languages-2022-2032">arts.gov.au</a></li>
+    <li>The Conversation (2018). <em>Meet the remote Indigenous community where a few thousand people use 15 different languages</em>. <a href="https://theconversation.com/meet-the-remote-indigenous-community-where-a-few-thousand-people-use-15-different-languages-107716">theconversation.com</a></li>
+    <li>Kaurna language revival (teaching since 1992 and 1997). <a href="https://en.wikipedia.org/wiki/Kaurna_language">Wikipedia: Kaurna language</a>; Amery, R. <em>Warrabarna Kaurna! Reclaiming an Australian Language</em>. <a href="https://adelaide.edu.au/library/about-the-library/university-press/warraparna-kaurna/">University of Adelaide Press</a></li>
+    <li>Charles Sturt University. <em>Wiradjuri language program underway at CSU</em>. <a href="https://news.csu.edu.au/latest-news/indigenous/wiradjuri-language-program-underway-at-csu">news.csu.edu.au</a></li>
+    <li>State boundaries: ABS ASGS, via <a href="https://github.com/rowanhogan/australian-states">github.com/rowanhogan/australian-states</a>, simplified with mapshaper. Community locations are approximate town coordinates added by the author.</li>
+  </ol>
+  <p style="margin-top:16px">Data notes: Census figures include small random adjustments by the ABS to protect privacy. Languages that are "not further defined" in the Census are left out of the speaker-range grid and the named treemap blocks. Every chart's Vega-Lite or Vega specification is in the <code>specs/</code> folder of this site's GitHub repository, and the data files are in <code>data/</code>.</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

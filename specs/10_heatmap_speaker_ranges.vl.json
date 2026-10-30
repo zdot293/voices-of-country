@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heatmap: how many Indigenous languages fall into each speaker-count range, Census 2011, 2016 and 2021. Two notable changes are outlined and annotated.",
+  "data": {
+    "url": "data/abs_languages_by_speaker_range.csv"
+  },
+  "width": 300,
+  "height": {
+    "step": 34
+  },
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "orient": "top",
+        "labelAngle": 0,
+        "labelFontSize": 13,
+        "ticks": false,
+        "domain": false
+      }
+    },
+    "y": {
+      "field": "range",
+      "type": "ordinal",
+      "title": "Speakers per language",
+      "sort": {
+        "field": "order",
+        "order": "descending"
+      },
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "stroke": "#faf6ef",
+        "strokeWidth": 2,
+        "cornerRadius": 3
+      },
+      "encoding": {
+        "color": {
+          "field": "languages",
+          "type": "quantitative",
+          "title": "Number of languages",
+          "scale": {
+            "scheme": "goldred"
+          },
+          "legend": {
+            "orient": "bottom",
+            "direction": "horizontal",
+            "gradientLength": 180
+          }
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "title": "Census"
+          },
+          {
+            "field": "range",
+            "title": "Speakers per language"
+          },
+          {
+            "field": "languages",
+            "title": "Number of languages"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": 600
+      },
+      "encoding": {
+        "text": {
+          "field": "languages",
+          "type": "quantitative"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.languages > 35",
+            "value": "#ffffff"
+          },
+          "value": "#2b2420"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2021 && (datum.order == 6 || datum.order == 0)"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "fill": null,
+        "stroke": "#2b2420",
+        "strokeWidth": 2.5,
+        "cornerRadius": 3
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.year == 2021 && (datum.order == 6 || datum.order == 0)"
+        },
+        {
+          "calculate": "datum.order == 6 ? ['Nearly doubled since', '2016 (9 → 17)'] : ['Down from 60', 'in 2011']",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 58,
+        "fontSize": 11.5,
+        "fontStyle": "italic",
+        "color": "#2b2420",
+        "lineHeight": 14
+      },
+      "encoding": {
+        "text": {
+          "field": "note"
+        }
+      }
+    }
+  ]
+}

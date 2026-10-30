@@ -1,0 +1,171 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Square bin map: languages grouped into 200 km x 200 km squares on the Australian Albers equal-area projection (EPSG:3577). Coordinates are pre-projected, so the map uses an identity projection and every square is the same size on the ground. Colour shows the share of each square's languages that are no longer spoken (sleeping).",
+  "width": "container",
+  "height": 600,
+  "projection": {
+    "type": "identity",
+    "reflectY": true
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/au_states_albers.topo.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e9dfcd",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/glottolog_au_languages.json"
+      },
+      "transform": [
+        {
+          "calculate": "floor(datum.x / 200000) * 200000",
+          "as": "bx"
+        },
+        {
+          "calculate": "floor(datum.y / 200000) * 200000",
+          "as": "by"
+        },
+        {
+          "calculate": "datum.level == 6 ? 1 : 0",
+          "as": "sleeping"
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "as": "n"
+            },
+            {
+              "op": "sum",
+              "field": "sleeping",
+              "as": "asleep"
+            }
+          ],
+          "groupby": [
+            "bx",
+            "by"
+          ]
+        },
+        {
+          "calculate": "datum.asleep / datum.n",
+          "as": "share"
+        },
+        {
+          "calculate": "{type: 'Feature', geometry: {type: 'Polygon', coordinates: [[[datum.bx + 9000, datum.by + 9000], [datum.bx + 9000, datum.by + 191000], [datum.bx + 191000, datum.by + 191000], [datum.bx + 191000, datum.by + 9000], [datum.bx + 9000, datum.by + 9000]]]}}",
+          "as": "geo"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "strokeWidth": 0
+      },
+      "encoding": {
+        "shape": {
+          "field": "geo",
+          "type": "geojson"
+        },
+        "color": {
+          "field": "share",
+          "type": "quantitative",
+          "title": "Share of languages sleeping",
+          "scale": {
+            "domain": [
+              0,
+              1
+            ],
+            "range": [
+              "#1f6f63",
+              "#f1e3c8",
+              "#9e3b2b"
+            ]
+          },
+          "legend": {
+            "format": ".0%",
+            "orient": "bottom-left",
+            "direction": "horizontal",
+            "gradientLength": 160,
+            "titleFontSize": 12
+          }
+        },
+        "tooltip": [
+          {
+            "field": "n",
+            "title": "Languages in this square"
+          },
+          {
+            "field": "asleep",
+            "title": "No longer spoken"
+          },
+          {
+            "field": "share",
+            "title": "Share sleeping",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 2250000,
+            "y": -4300000,
+            "t": "South-east: almost every",
+            "a": "left"
+          },
+          {
+            "x": 2250000,
+            "y": -4420000,
+            "t": "language has gone quiet",
+            "a": "left"
+          },
+          {
+            "x": -1950000,
+            "y": -2350000,
+            "t": "Top End and deserts: most",
+            "a": "right"
+          },
+          {
+            "x": -1950000,
+            "y": -2470000,
+            "t": "languages still have speakers",
+            "a": "right"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11.5,
+        "fontWeight": 600,
+        "color": "#2b2420",
+        "align": {
+          "expr": "datum.a"
+        }
+      },
+      "encoding": {
+        "longitude": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    }
+  ]
+}

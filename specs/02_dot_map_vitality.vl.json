@@ -1,0 +1,209 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Dot map: approximate home location of 356 Australian languages (Glottolog 5), coloured by Glottolog's endangerment status. Click the legend to isolate a status.",
+  "width": "container",
+  "height": 470,
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -132,
+      0
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/au_states.topo.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e9dfcd",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/glottolog_au_languages.json"
+      },
+      "params": [
+        {
+          "name": "pick",
+          "select": {
+            "type": "point",
+            "fields": [
+              "status"
+            ]
+          },
+          "bind": "legend"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 52,
+        "stroke": "#ffffff",
+        "strokeWidth": 0.6
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "status",
+          "type": "nominal",
+          "title": "Status today (click to filter)",
+          "scale": {
+            "domain": [
+              "Spoken by all ages",
+              "Threatened",
+              "Shifting",
+              "Moribund",
+              "Nearly gone",
+              "Sleeping"
+            ],
+            "range": [
+              "#1f6f63",
+              "#6aa585",
+              "#e2a63b",
+              "#d0692f",
+              "#9e3b2b",
+              "#cbc3b6"
+            ]
+          },
+          "legend": {
+            "orient": "left",
+            "offset": -10,
+            "symbolStrokeWidth": 0,
+            "labelFontSize": 12,
+            "titleFontSize": 12
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "pick",
+            "value": 0.95
+          },
+          "value": 0.08
+        },
+        "order": {
+          "field": "level",
+          "sort": "descending"
+        },
+        "tooltip": [
+          {
+            "field": "name",
+            "title": "Language"
+          },
+          {
+            "field": "status",
+            "title": "Status"
+          },
+          {
+            "field": "family",
+            "title": "Language family"
+          },
+          {
+            "field": "state",
+            "title": "State / territory"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 113.2,
+            "lat": -40.5,
+            "t": "Each dot is one language's approximate home on Country"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "color": "#7a6e63"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 101,
+            "lat": -33.0,
+            "t": "Why only 2 green dots?",
+            "w": 700
+          },
+          {
+            "lon": 101,
+            "lat": -34.4,
+            "t": "This international scale is stricter",
+            "w": 400
+          },
+          {
+            "lon": 101,
+            "lat": -35.8,
+            "t": "than the national survey, which",
+            "w": 400
+          },
+          {
+            "lon": 101,
+            "lat": -37.2,
+            "t": "counts 14 languages as strong.",
+            "w": 400
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 11.5,
+        "color": "#2b2420",
+        "fontWeight": {
+          "expr": "datum.w"
+        }
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    }
+  ]
+}

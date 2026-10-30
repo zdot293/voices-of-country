@@ -1,0 +1,210 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Line chart of the share of Aboriginal and Torres Strait Islander people who speak an Indigenous language at home (1991-2021), beside a bar chart of the number of speakers (2001, 2016, 2021).",
+  "hconcat": [
+    {
+      "title": {
+        "text": "Share of First Nations people speaking an Indigenous language at home",
+        "fontSize": 13,
+        "anchor": "start"
+      },
+      "data": {
+        "url": "data/abs_share_over_time.csv"
+      },
+      "width": 590,
+      "height": 230,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "pct",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "domain": [
+              0,
+              20
+            ]
+          },
+          "axis": {
+            "labelExpr": "datum.value + '%'",
+            "tickCount": 4
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "color": "#c2622d",
+            "strokeWidth": 3
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "color": "#c2622d",
+            "size": 60
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "year",
+                "title": "Census"
+              },
+              {
+                "field": "pct",
+                "title": "% speaking at home"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -12,
+            "fontSize": 11,
+            "color": "#2b2420"
+          },
+          "encoding": {
+            "text": {
+              "field": "pct",
+              "type": "quantitative",
+              "format": ".1f"
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "year": 1996,
+                "pct": 4.2,
+                "t": "About 1 in 6 in 1991, fewer than 1 in 10 by 2021"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontStyle": "italic",
+            "fontSize": 12,
+            "color": "#7a6e63"
+          },
+          "encoding": {
+            "text": {
+              "field": "t"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
+        "text": "...but the number of speakers keeps growing",
+        "fontSize": 13,
+        "anchor": "start"
+      },
+      "data": {
+        "url": "data/abs_speaker_counts.csv"
+      },
+      "width": 300,
+      "height": 230,
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "ordinal",
+          "title": null,
+          "axis": {
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "speakers",
+          "type": "quantitative",
+          "title": null,
+          "scale": {
+            "domain": [
+              0,
+              90000
+            ]
+          },
+          "axis": {
+            "format": "~s",
+            "tickCount": 4
+          }
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "color": "#1f6f63",
+            "width": 44
+          },
+          "encoding": {
+            "tooltip": [
+              {
+                "field": "year",
+                "title": "Census"
+              },
+              {
+                "field": "speakers",
+                "title": "Speakers",
+                "format": ","
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -8,
+            "fontSize": 11,
+            "color": "#2b2420"
+          },
+          "encoding": {
+            "text": {
+              "field": "speakers",
+              "type": "quantitative",
+              "format": ","
+            }
+          }
+        },
+        {
+          "data": {
+            "values": [
+              {
+                "year": 2001,
+                "speakers": 84000,
+                "t": "+55% from 2001 to 2021"
+              }
+            ]
+          },
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "dx": -20,
+            "fontStyle": "italic",
+            "fontSize": 12,
+            "color": "#1f6f63",
+            "fontWeight": 600
+          },
+          "encoding": {
+            "text": {
+              "field": "t"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "spacing": 36
+}

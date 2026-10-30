@@ -1,0 +1,171 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Choropleth small multiples: % of each state's Aboriginal and Torres Strait Islander people who speak an Indigenous language at home, Census 2011, 2016 and 2021. Each state is labelled with its value; hover a state to compare it across years.",
+  "data": {
+    "url": "data/abs_share_by_state.csv"
+  },
+  "transform": [
+    {
+      "lookup": "state",
+      "from": {
+        "data": {
+          "url": "data/au_states.topo.json",
+          "format": {
+            "type": "topojson",
+            "feature": "states"
+          }
+        },
+        "key": "properties.name"
+      },
+      "as": "geo"
+    }
+  ],
+  "facet": {
+    "column": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "header": {
+        "labelFontSize": 15,
+        "labelFontWeight": 600
+      }
+    }
+  },
+  "spec": {
+    "width": 318,
+    "height": 260,
+    "projection": {
+      "type": "conicEqualArea",
+      "parallels": [
+        -18,
+        -36
+      ],
+      "rotate": [
+        -132,
+        0
+      ]
+    },
+    "layer": [
+      {
+        "params": [
+          {
+            "name": "hover",
+            "select": {
+              "type": "point",
+              "fields": [
+                "state"
+              ],
+              "on": "pointerover",
+              "clear": "pointerout"
+            }
+          }
+        ],
+        "mark": {
+          "type": "geoshape",
+          "stroke": "#ffffff"
+        },
+        "encoding": {
+          "shape": {
+            "field": "geo",
+            "type": "geojson"
+          },
+          "color": {
+            "field": "pct",
+            "type": "quantitative",
+            "title": "% speaking an Indigenous language at home",
+            "scale": {
+              "type": "threshold",
+              "domain": [
+                1,
+                2.5,
+                5,
+                10,
+                20
+              ],
+              "range": [
+                "#f6ecd9",
+                "#ecd0a6",
+                "#dfa86c",
+                "#cb7a3c",
+                "#a5502a",
+                "#6e2f1c"
+              ]
+            },
+            "legend": {
+              "orient": "bottom",
+              "direction": "horizontal",
+              "titleFontSize": 12
+            }
+          },
+          "strokeWidth": {
+            "condition": {
+              "param": "hover",
+              "empty": false,
+              "value": 2.5
+            },
+            "value": 0.8
+          },
+          "stroke": {
+            "condition": {
+              "param": "hover",
+              "empty": false,
+              "value": "#2b2420"
+            },
+            "value": "#ffffff"
+          },
+          "tooltip": [
+            {
+              "field": "state",
+              "title": "State"
+            },
+            {
+              "field": "year",
+              "title": "Census"
+            },
+            {
+              "field": "pct",
+              "title": "% speaking at home"
+            }
+          ]
+        }
+      },
+      {
+        "transform": [
+          {
+            "filter": "isValid(datum.lab_lon) && datum.lab_lon !== ''"
+          },
+          {
+            "calculate": "format(datum.pct, '.1f') + '%'",
+            "as": "lab"
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "fontSize": 12,
+          "fontWeight": 700
+        },
+        "encoding": {
+          "longitude": {
+            "field": "lab_lon",
+            "type": "quantitative"
+          },
+          "latitude": {
+            "field": "lab_lat",
+            "type": "quantitative"
+          },
+          "text": {
+            "field": "lab"
+          },
+          "color": {
+            "condition": {
+              "test": "datum.pct >= 5",
+              "value": "#ffffff"
+            },
+            "value": "#2b2420"
+          }
+        }
+      }
+    ]
+  },
+  "spacing": 14
+}

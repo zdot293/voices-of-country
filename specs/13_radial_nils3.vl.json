@@ -1,0 +1,142 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Polar-area (radial) chart: the 141 language varieties reported in NILS3, by how many people speak them. Wedge length shows the number of varieties.",
+  "data": {
+    "url": "data/nils3_speaker_ranges.csv"
+  },
+  "width": 380,
+  "height": 380,
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "end"
+        }
+      ],
+      "sort": [
+        {
+          "field": "order"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.end - 1",
+      "as": "start"
+    },
+    {
+      "calculate": "datum.start + 0.5",
+      "as": "middle"
+    }
+  ],
+  "encoding": {
+    "theta": {
+      "field": "start",
+      "type": "quantitative",
+      "stack": null,
+      "scale": {
+        "domain": [
+          0,
+          8
+        ],
+        "range": [
+          0,
+          6.2832
+        ]
+      }
+    },
+    "theta2": {
+      "field": "end"
+    },
+    "radius": {
+      "field": "varieties",
+      "type": "quantitative",
+      "scale": {
+        "type": "sqrt",
+        "zero": true,
+        "rangeMin": 18
+      }
+    },
+    "order": {
+      "field": "order",
+      "type": "quantitative"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 14,
+        "stroke": "#faf6ef",
+        "strokeWidth": 2,
+        "padAngle": 0.01
+      },
+      "encoding": {
+        "color": {
+          "field": "range",
+          "type": "ordinal",
+          "title": "Speakers per variety",
+          "sort": {
+            "field": "order"
+          },
+          "scale": {
+            "domain": [
+              "0",
+              "1–10",
+              "11–50",
+              "51–250",
+              "251–500",
+              "501–1,000",
+              "More than 1,000",
+              "Don't know"
+            ],
+            "range": [
+              "#cbc3b6",
+              "#9e3b2b",
+              "#d0692f",
+              "#e2a63b",
+              "#c9c27a",
+              "#6aa585",
+              "#1f6f63",
+              "#e6e0d6"
+            ]
+          },
+          "legend": {
+            "orient": "right",
+            "titleFontSize": 12
+          }
+        },
+        "tooltip": [
+          {
+            "field": "range",
+            "title": "Speakers"
+          },
+          {
+            "field": "varieties",
+            "title": "Language varieties"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "radiusOffset": 13,
+        "fontSize": 12.5,
+        "fontWeight": 700,
+        "color": "#2b2420"
+      },
+      "encoding": {
+        "theta": {
+          "field": "middle",
+          "type": "quantitative"
+        },
+        "theta2": null,
+        "text": {
+          "field": "varieties",
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}

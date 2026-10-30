@@ -1,0 +1,16 @@
+id,parent,name,speakers,group
+root,,All speakers,,
+trad,root,Traditional languages,,Traditional languages
+new,root,New contact languages,,New contact languages
+ae,root,Aboriginal English,1371,Aboriginal English
+ns,root,Language not specified,8440,Language not specified
+t1,trad,Djambarrpuyngu,3839,Traditional languages
+t2,trad,Pitjantjatjara,3399,Traditional languages
+t3,trad,Cape York Peninsula languages (grouped),2688,Traditional languages
+t4,trad,Warlpiri,2592,Traditional languages
+t5,trad,Murrinh Patha,2063,Traditional languages
+t6,trad,Tiwi,2053,Traditional languages
+t7,trad,All other traditional languages,35505,Traditional languages
+n1,new,Yumplatok (Torres Strait Creole),7596,New contact languages
+n2,new,Kriol,7403,New contact languages
+n3,new,Other contact languages,27,New contact languages

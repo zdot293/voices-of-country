@@ -1,0 +1,180 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Timeline: milestones of language loss, national surveys and revival policy from 1788 to 2022. Hover a milestone to see its source.",
+  "data": {
+    "url": "data/timeline.csv"
+  },
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "row_number",
+          "as": "idx"
+        }
+      ]
+    }
+  ],
+  "width": "container",
+  "height": {
+    "step": 46
+  },
+  "encoding": {
+    "y": {
+      "field": "idx",
+      "type": "ordinal",
+      "axis": null
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#cbbfae",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "y": null,
+        "x": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -1,
+              10
+            ]
+          },
+          "axis": null
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "tl",
+          "select": {
+            "type": "point",
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 220,
+        "stroke": "#faf6ef",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "kind",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "loss",
+              "survey",
+              "revival"
+            ],
+            "range": [
+              "#9e3b2b",
+              "#e2a63b",
+              "#1f6f63"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "labelExpr": "datum.label == 'loss' ? 'Loss or setback' : datum.label == 'survey' ? 'National survey' : 'Revival and recognition'"
+          }
+        },
+        "size": {
+          "condition": {
+            "param": "tl",
+            "empty": false,
+            "value": 420
+          },
+          "value": 220
+        },
+        "tooltip": [
+          {
+            "field": "year",
+            "title": "Year"
+          },
+          {
+            "field": "event",
+            "title": "Milestone"
+          },
+          {
+            "field": "detail",
+            "title": "What happened"
+          },
+          {
+            "field": "source",
+            "title": "Source"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -18,
+        "fontSize": 14,
+        "fontWeight": 700,
+        "color": "#2b2420"
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "year"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 18,
+        "dy": -8,
+        "fontSize": 13,
+        "fontWeight": 700,
+        "color": "#2b2420"
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "event"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 18,
+        "dy": 9,
+        "fontSize": 12,
+        "color": "#7a6e63"
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "detail"
+        }
+      }
+    }
+  ]
+}

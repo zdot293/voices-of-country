@@ -1,0 +1,228 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Proportional symbol map: the ten Indigenous locations with the most people speaking an Indigenous language at home (Census 2021).",
+  "width": "container",
+  "height": 430,
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -132,
+      0
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/au_states.topo.json",
+        "format": {
+          "type": "topojson",
+          "feature": "states"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e9dfcd",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "data": {
+        "url": "data/abs_top_locations_2021.csv"
+      },
+      "params": [
+        {
+          "name": "hl",
+          "select": {
+            "type": "point",
+            "fields": [
+              "place"
+            ],
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "speakers",
+          "type": "quantitative",
+          "title": "Speakers",
+          "scale": {
+            "domain": [
+              0,
+              2200
+            ],
+            "range": [
+              0,
+              1500
+            ],
+            "zero": true
+          },
+          "legend": {
+            "values": [
+              500,
+              1000,
+              2000
+            ],
+            "orient": "bottom-left",
+            "symbolFillColor": "#c2622d",
+            "symbolOpacity": 0.7,
+            "titleFontSize": 12
+          }
+        },
+        "color": {
+          "value": "#c2622d"
+        },
+        "opacity": {
+          "condition": {
+            "param": "hl",
+            "empty": true,
+            "value": 0.72
+          },
+          "value": 0.25
+        },
+        "tooltip": [
+          {
+            "field": "place",
+            "title": "Community"
+          },
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "speakers",
+            "title": "Speakers (2021)",
+            "format": ","
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "data/abs_top_locations_2021.csv"
+      },
+      "transform": [
+        {
+          "filter": "indexof(['Yarrabah', 'Wadeye', 'Aurukun', 'Palm Island'], datum.place) >= 0"
+        },
+        {
+          "calculate": "datum.place + ' ' + format(datum.speakers, ',')",
+          "as": "lab"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#2b2420",
+        "align": "left",
+        "dx": 16
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "lab"
+        },
+        "yOffset": {
+          "value": 0
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 134.6,
+            "lat": -9.4,
+            "t": "Arnhem Land: Maningrida 2,198 · Galiwinku 1,964 · Milingimbi 1,003"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": 600,
+        "color": "#2b2420"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 116.5,
+            "lat": -31.0,
+            "t": "7 of the 10 largest"
+          },
+          {
+            "lon": 116.5,
+            "lat": -32.3,
+            "t": "speaking communities"
+          },
+          {
+            "lon": 116.5,
+            "lat": -33.6,
+            "t": "are in the NT"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontStyle": "italic",
+        "color": "#7a6e63"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        }
+      }
+    }
+  ]
+}

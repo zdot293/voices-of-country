@@ -1,0 +1,163 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Unit (waffle) chart: each square is one of the roughly 250 languages spoken at colonisation, coloured by its situation today (NILS3, 2018-19). Labels sit beside the squares instead of in a legend.",
+  "width": 640,
+  "height": 178,
+  "layer": [
+    {
+      "data": {
+        "sequence": {
+          "start": 0,
+          "stop": 250,
+          "as": "i"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.i % 25",
+          "as": "col"
+        },
+        {
+          "calculate": "floor(datum.i / 25)",
+          "as": "row"
+        },
+        {
+          "calculate": "datum.i < 14 ? 'Strong' : datum.i < 123 ? 'In use or being revived, but not strong' : 'No longer spoken day-to-day (estimate)'",
+          "as": "group"
+        }
+      ],
+      "mark": {
+        "type": "square",
+        "size": 200,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "col",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -0.5,
+              36.5
+            ],
+            "nice": false,
+            "zero": false
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "row",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -0.5,
+              9.5
+            ],
+            "nice": false,
+            "zero": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Strong",
+              "In use or being revived, but not strong",
+              "No longer spoken day-to-day (estimate)"
+            ],
+            "range": [
+              "#1f6f63",
+              "#e2a63b",
+              "#cbc3b6"
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "group",
+            "title": "Category"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 25.6,
+            "y": 0.0,
+            "t": "14 strong",
+            "c": "#1f6f63",
+            "w": 700
+          },
+          {
+            "x": 25.6,
+            "y": 0.85,
+            "t": "children still learn them",
+            "c": "#7a6e63",
+            "w": 400
+          },
+          {
+            "x": 25.6,
+            "y": 2.4,
+            "t": "109 in use or being revived",
+            "c": "#b9822a",
+            "w": 700
+          },
+          {
+            "x": 25.6,
+            "y": 3.25,
+            "t": "but not spoken by all ages",
+            "c": "#7a6e63",
+            "w": 400
+          },
+          {
+            "x": 25.6,
+            "y": 6.4,
+            "t": "about 127 no longer",
+            "c": "#7d7468",
+            "w": 700
+          },
+          {
+            "x": 25.6,
+            "y": 7.25,
+            "t": "spoken day-to-day",
+            "c": "#7a6e63",
+            "w": 400
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 12.5,
+        "fontWeight": {
+          "expr": "datum.w"
+        }
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "t"
+        },
+        "color": {
+          "field": "c",
+          "type": "nominal",
+          "scale": null
+        }
+      }
+    }
+  ]
+}

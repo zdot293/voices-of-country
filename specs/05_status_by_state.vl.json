@@ -1,0 +1,136 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "100% stacked bar: Glottolog endangerment status of each state's languages.",
+  "data": {
+    "url": "data/glottolog_au_languages.json"
+  },
+  "width": "container",
+  "height": 230,
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "n"
+        }
+      ],
+      "groupby": [
+        "state",
+        "status",
+        "level"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "n",
+          "as": "total"
+        }
+      ],
+      "groupby": [
+        "state"
+      ]
+    },
+    {
+      "calculate": "datum.n / datum.total",
+      "as": "pct"
+    },
+    {
+      "calculate": "datum.state + ' (' + datum.total + ')'",
+      "as": "label"
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "height": 20,
+    "stroke": "#faf6ef",
+    "strokeWidth": 0.5
+  },
+  "encoding": {
+    "y": {
+      "field": "label",
+      "type": "nominal",
+      "title": null,
+      "sort": [
+        "NT (96)",
+        "WA (66)",
+        "SA (23)",
+        "QLD (126)",
+        "NSW (31)",
+        "VIC (6)",
+        "TAS (8)"
+      ],
+      "axis": {
+        "ticks": false,
+        "domain": false,
+        "labelFontSize": 12
+      }
+    },
+    "x": {
+      "field": "n",
+      "type": "quantitative",
+      "stack": "normalize",
+      "title": "Share of the state's languages",
+      "axis": {
+        "format": "%",
+        "grid": false,
+        "tickCount": 5
+      }
+    },
+    "color": {
+      "field": "status",
+      "type": "nominal",
+      "title": null,
+      "scale": {
+        "domain": [
+          "Spoken by all ages",
+          "Threatened",
+          "Shifting",
+          "Moribund",
+          "Nearly gone",
+          "Sleeping"
+        ],
+        "range": [
+          "#1f6f63",
+          "#6aa585",
+          "#e2a63b",
+          "#d0692f",
+          "#9e3b2b",
+          "#cbc3b6"
+        ]
+      },
+      "legend": {
+        "orient": "top",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "symbolSize": 140,
+        "labelFontSize": 12,
+        "columnPadding": 14
+      }
+    },
+    "order": {
+      "field": "level",
+      "sort": "ascending"
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "title": "State"
+      },
+      {
+        "field": "status",
+        "title": "Status"
+      },
+      {
+        "field": "n",
+        "title": "Languages"
+      },
+      {
+        "field": "pct",
+        "title": "Share",
+        "format": ".0%"
+      }
+    ]
+  }
+}
